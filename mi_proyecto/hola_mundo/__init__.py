@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from config import Config
 from datetime import datetime, date
 
@@ -72,7 +72,52 @@ def init_app():
         except Exception as e:
             return jsonify({'error': 'Ha ocurrido un error'}), 400               
 
-    
+#EJERCICIO N° 6
+    @app.route('/operate/<string:operation>/<int:num1>/<int:num2>')
+    def operate(operation, num1, num2):
+        if operation == 'sum':
+            result = num1 + num2
+        elif operation == 'sub':
+            result = num1 - num2
+        elif operation == 'mult':
+            result = num1 * num2
+        elif operation == 'div':
+            if num2 == 0:
+                return jsonify({'error':'La división por cero no está permitida'}), 400
+            result = num1 / num2
+        else:
+            return jsonify({'error': 'Operación no válida'}), 400
+        return jsonify({'result': result}), 200
+
+#EJERCICIO N°7
+    @app.route('/operate')
+    def operate_query_params():
+        operation = request.args.get('operation', default=None)
+        num1 = int(request.args.get('num1', default=0))
+        num2 = int(request.args.get('num2', default=0))
+
+        if operation is None:
+            return jsonify({'error': 'Operación no especificada'}), 400
+
+        if operation == 'sum':
+            result = num1 + num2
+        elif operation == 'sub':
+            result = num1 - num2
+        elif operation == 'mult':
+            result = num1 * num2
+        elif operation == 'div':
+            if num2 == 0:
+                return jsonify({'error': 'La división por cero no está permitida'}), 400
+            result = num1 / num2
+        else:
+            return jsonify({'error': 'Operación no válida'}), 400
+
+        return jsonify({'result':result}), 200
+
+
+
+
+
     return app
 
 
