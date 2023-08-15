@@ -115,9 +115,71 @@ def init_app():
         return jsonify({'result':result}), 200
 
 
+#EJERCICIO N°8
+    @app.route('/title/<string:word>', methods=['GET'])
+    def title(word):
+        try:
+            # Aplicamos el formato de título
+            formatted_word = word.title()    
+            return jsonify({'formatted_word': formatted_word}), 200
+        
+        except Exception as e:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
 
 
+#EJERCICIO N°9
+    @app.route('/formatted/<string:dni>', methods=['GET'])
+    def formatO_dni(dni):
+        try:
+            # Reemplazamos los caracteres no numéricos, puntos, guiones
+            numero_dni = dni.replace('.', '').replace('-', '')
+            
+            # Verificamos que el DNI tenga 8 caracteres numéricos y que no empiece con ceros
+            if len(numero_dni) != 8 or numero_dni[0] == '0':
+                return jsonify({'error': 'DNI inválido'}), 400
+            
+            formatted_dni = int(numero_dni)
+            return jsonify({'formatted_dni': formatted_dni}), 200
+        
+        except Exception as e:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
+
+    
+
+#EJERCICIO N°10
+    @app.route('/format', methods=['GET'])
+    def user_data():
+        try:
+            firstname = request.args.get('firstname', default='').capitalize()
+            lastname = request.args.get('lastname', default='').capitalize()
+            dob = request.args.get('dob', default='')
+            dni = request.args.get('dni', default='').replace('.', '').replace('-', '')
+
+            # Validamos la fecha de nacimiento
+            dob_date = datetime.strptime(dob, '%Y-%m-%d')
+            current_date = datetime.now()
+            
+            if dob_date > current_date:
+                return jsonify({'error': 'La fecha de nacimiento es posterior a la fecha actual'}), 400
+            
+            # Calculamos la edad de la persona en base a su fecha de nacimiento y devolvemos dicho valor.
+            age = current_date.year - dob_date.year - ((current_date.month, current_date.day) < (dob_date.month, dob_date.day))
+        
+            # Verificamos que el DNI tenga 8 caracteres numéricos y que no empiece con ceros
+            if len(dni) != 8 or dni[0] == '0':
+                return jsonify({'error': 'DNI inválido'}), 400
+            
+            formatted_dni = int(dni)
+        
+            response = {
+                "firstname": firstname,
+                "lastname": lastname,
+                "age": age,
+                "dni": formatted_dni
+            }
+            return jsonify(response), 200
+        
+        except Exception as e:
+            return jsonify({"error": "Ha ocurrido un error"}), 400
 
     return app
-
-
