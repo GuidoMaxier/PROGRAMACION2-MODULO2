@@ -172,14 +172,32 @@ def init_app():
             formatted_dni = int(dni)
         
             response = {
-                "firstname": firstname,
-                "lastname": lastname,
-                "age": age,
-                "dni": formatted_dni
+                'firstname': firstname,
+                'lastname': lastname,
+                'age': age,
+                'dni': formatted_dni
             }
             return jsonify(response), 200
         
         except Exception as e:
-            return jsonify({"error": "Ha ocurrido un error"}), 400
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
 
+
+
+
+#EJERCICIO 13     
+    @app.route('/convert/binary/<string:num>', methods=['GET'])
+    def binario_a_decimal(num):
+        num_decimal = 0
+        try:
+            num_binario = num[::-1]  
+            posicion = 0
+            for digito in num_binario:
+                if digito == '1':
+                    num_decimal += 2 ** posicion
+                posicion += 1
+            return jsonify({'decimal': num_decimal}), 200
+        except:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
+    
     return app
