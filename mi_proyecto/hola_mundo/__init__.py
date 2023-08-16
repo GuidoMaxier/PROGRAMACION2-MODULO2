@@ -200,11 +200,11 @@ def init_app():
                     if digit == '1':
                         decimal_value += 2 ** i
 
-                return jsonify({"decimal": decimal_value}, 200)
+                return jsonify({"decimal": decimal_value}), 200
             else:
-                return jsonify({"error": "Numero binario invalido"}, 400)
+                return jsonify({"error": "Numero binario invalido"}), 400
         except ValueError:
-            return jsonify({"error": "Numero binario invalido"}, 400)
+            return jsonify({"error": "Numero binario invalido"}), 400
 
 
 
@@ -220,16 +220,16 @@ def init_app():
                 stack.append(symbol)
             elif symbol in closing_symbols:
                 if not stack:
-                    return jsonify({"balanced": False}, 200)
+                    return jsonify({"balanced": False}), 200
 
                 top_symbol = stack.pop()
                 if opening_symbols.index(top_symbol) != closing_symbols.index(symbol):
-                    return jsonify({"balanced": False}, 200)
+                    return jsonify({"balanced": False}), 200
 
         if not stack:
-            return jsonify({"balanced": True}, 200)
+            return jsonify({"balanced": True}), 200
 
-        return jsonify({"balanced": False}, 200)
+        return jsonify({"balanced": False}), 200
     
 
     return app
