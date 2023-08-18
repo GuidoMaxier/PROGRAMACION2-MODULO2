@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 from config import Config
 from datetime import datetime, date
 
+# Importar la función desde el archivo util.py
+from .util import formato_dni
+
 def init_app():
     """Crea y configura la aplicación Flask"""
     app = Flask(__name__, static_folder = Config.STATIC_FOLDER, template_folder = Config.TEMPLATE_FOLDER)
@@ -132,18 +135,9 @@ def init_app():
 
 #EJERCICIO N°9
     @app.route('/formatted/<string:dni>', methods=['GET'])
-    def formatO_dni(dni):
+    def formato(dni):
         try:
-            # Reemplazamos los caracteres no numéricos, puntos, guiones
-            numero_dni = dni.replace('.', '').replace('-', '')
-            
-            # Verificamos que el DNI tenga 8 caracteres numéricos y que no empiece con ceros
-            if len(numero_dni) != 8 or numero_dni[0] == '0':
-                return jsonify({'error': 'DNI inválido'}), 400
-            
-            formatted_dni = int(numero_dni)
-            return jsonify({'formatted_dni': formatted_dni}), 200
-        
+            return formato_dni(dni)    
         except Exception as e:
             return jsonify({'error': 'Ha ocurrido un error'}), 400
 
