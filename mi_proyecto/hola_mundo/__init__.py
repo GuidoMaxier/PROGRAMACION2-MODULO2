@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from config import Config
 from datetime import datetime, date
 
+
 # Importar la función desde el archivo util.py
 from .util import formato_dni
 
@@ -199,8 +200,22 @@ def init_app():
                 return jsonify({"error": "Numero binario invalido"}), 400
         except ValueError:
             return jsonify({"error": "Numero binario invalido"}), 400
+        
 
-
+#EJERCICIO 13 BIS     
+    @app.route('/convert/binary/<string:num>', methods=['GET'])
+    def binario_a_decimal(num):
+        num_decimal = 0
+        try:
+            num_binario = num[::-1]  
+            posicion = 0
+            for digito in num_binario:
+                if digito == '1':
+                    num_decimal += 2 ** posicion
+                posicion += 1
+            return jsonify({'decimal': num_decimal}), 200
+        except:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
 
 #EJERCICIO N° 14
     @app.route('/balance/<string:input>')
