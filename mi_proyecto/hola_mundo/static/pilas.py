@@ -1,3 +1,5 @@
+#Traido desde la clase de ALGORITMIA
+
 class Stack:
     def __init__(self):
         self._data = []
@@ -42,30 +44,32 @@ def balanceador(expresion): # Es un Balanceador
     return stack.is_empty()    
 
 
-expresion ="{(a+b) * (c + d)}"  
-expresion1 ="{(a+b) * (c + d)"  
+if __name__ == "__main__":
 
-if balanceador(expresion1):
-    print('Los limitadores estan balanceados')
-else:
-    print('Los limitadores NO estan balanceados')  
+    expresion ="{(a+b) * (c + d)}"  
+    expresion1 ="{(a+b) * (c + d)"  
 
-    
+    if balanceador(expresion1):
+        print('Los limitadores estan balanceados')
+    else:
+        print('Los limitadores NO estan balanceados')  
 
-pilaAAA= Stack()
-pilaAAA.push(10)
-pilaAAA.push(6)
-pilaAAA.push(7)
+        
 
-pilaAAA.display()
-# print(len(pilaAAA))
-# print(pilaAAA.is_empty)
-print('----------------')
-print(pilaAAA.top())
+    pilaAAA= Stack()
+    pilaAAA.push(10)
+    pilaAAA.push(6)
+    pilaAAA.push(7)
 
-print(pilaAAA.pop())
+    pilaAAA.display()
+    # print(len(pilaAAA))
+    # print(pilaAAA.is_empty)
+    print('----------------')
+    print(pilaAAA.top())
 
-print('-------')
-pilaAAA.display()
+    print(pilaAAA.pop())
+
+    print('-------')
+    pilaAAA.display()
 
 

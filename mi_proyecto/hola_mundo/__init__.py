@@ -2,8 +2,13 @@ from flask import Flask, jsonify, request
 from config import Config
 from datetime import datetime, date
 
-# Importar la función desde el archivo util.py
-from .util import formato_dni
+
+#importamos la util.py para el manejos de funciones 
+#y pilas.py archivo visto en algoritmia (P/Ejercicio 14)
+from .static.pilas import balanceador
+from .static.util import formato_dni, encode_morse, decode_morse_fun
+
+
 
 def init_app():
     """Crea y configura la aplicación Flask"""
@@ -180,6 +185,27 @@ def init_app():
             return jsonify({'error': 'Ha ocurrido un error'}), 400
 
 
+#EJERCICIO N° 11 
+    # Endpoint para codificar una palabra a código morse
+    @app.route('/encode/<string:keyword>')
+    def encode_keyword(keyword):
+        try:
+            encoded_morse = encode_morse(keyword)
+            return jsonify({'morse_code': encoded_morse}), 200
+        except Exception as e:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
+        
+
+#EJERCICIO N° 12 
+    # Endpoint para decodificar un código morse a una palabra
+    @app.route('/decode/<string:morse_code>')
+    def decode_morse(morse_code):
+        try:
+            decoded_text = decode_morse_fun(morse_code)
+            return jsonify({'decoded_text': decoded_text}), 200
+        except Exception as e:
+            return jsonify({'error': 'Ha ocurrido un error'}), 400
+
 
 
 #EJERCICIO N° 13
@@ -205,26 +231,16 @@ def init_app():
 #EJERCICIO N° 14
     @app.route('/balance/<string:input>')
     def balance(input):
-        stack = []
-        opening_symbols = "([{"
-        closing_symbols = ")]}"
+        try:
+            if balanceador(input):
+                #print('Los limitadores estan balanceados')
+                return jsonify({"balanced": True}), 200
+            else:
+                #print('Los limitadores NO estan balanceados') 
+                return jsonify({"balanced": False}), 200
+        except ValueError:
+            return jsonify({"error": "Numero binario invalido"}), 400
 
-        for symbol in input:
-            if symbol in opening_symbols:
-                stack.append(symbol)
-            elif symbol in closing_symbols:
-                if not stack:
-                    return jsonify({"balanced": False}), 200
-
-                top_symbol = stack.pop()
-                if opening_symbols.index(top_symbol) != closing_symbols.index(symbol):
-                    return jsonify({"balanced": False}), 200
-
-        if not stack:
-            return jsonify({"balanced": True}), 200
-
-        return jsonify({"balanced": False}), 200
-    
 
     return app
 
