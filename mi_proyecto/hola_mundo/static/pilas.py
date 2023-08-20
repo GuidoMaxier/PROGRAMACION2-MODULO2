@@ -1,5 +1,7 @@
 #Traido desde la clase de ALGORITMIA
 
+#EJERCICIO N° 14
+
 class Stack:
     def __init__(self):
         self._data = []
